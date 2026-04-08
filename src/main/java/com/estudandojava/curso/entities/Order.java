@@ -1,5 +1,6 @@
 package com.estudandojava.curso.entities;
 
+import com.estudandojava.curso.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -17,6 +18,8 @@ public class Order {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant now;
 
+    private Integer orderStatus;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
@@ -24,10 +27,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(User client, Long id, Instant now) {
+    public Order(User client, Long id, Instant now, OrderStatus orderStatus) {
         this.client = client;
         this.id = id;
         this.now = now;
+        setOrderStatus(orderStatus);
     }
 
     public User getClient() {
@@ -52,6 +56,16 @@ public class Order {
 
     public void setNow(Instant now) {
         this.now = now;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) {
+            this.orderStatus = orderStatus.getCode();
+        }
     }
 
     @Override
