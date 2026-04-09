@@ -42,6 +42,14 @@ public class Order {
         setOrderStatus(orderStatus);
     }
 
+    public Double getTotal(){
+        double soma = 0.0;
+        for(OrderItem x: items){
+            soma += x.getSubTotal();
+        }
+        return soma;
+    }
+
     public Payment getPayment() {
         return payment;
     }
