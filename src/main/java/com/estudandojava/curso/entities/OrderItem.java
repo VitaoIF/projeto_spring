@@ -28,6 +28,10 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    public Double getSubTotal(){
+        return price * quantity;
+    }
+
     public Double getPrice() {
         return price;
     }
