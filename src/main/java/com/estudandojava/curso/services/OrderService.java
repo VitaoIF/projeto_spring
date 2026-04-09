@@ -4,6 +4,7 @@ import com.estudandojava.curso.entities.Order;
 import com.estudandojava.curso.repositories.OrderRepository;
 import com.estudandojava.curso.services.exceptions.DatabaseException;
 import com.estudandojava.curso.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -42,9 +43,14 @@ public class OrderService {
     }
 
     public Order update(Long id, Order order){
-        Order entity = repository.getReferenceById(id);
-        updateOrder(entity, order);
-        return repository.save(entity);
+        try {
+            Order entity = repository.getReferenceById(id);
+            updateOrder(entity, order);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
+
     }
 
     private void updateOrder(Order entity, Order order) {
